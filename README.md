@@ -7,6 +7,6 @@ finally figured this out - easily using Git and RStudio for ENV710 group project
 
 # this repository is the real deal!
 
-# Cr6 values
-# LOD = 0.004 ppb (marked as bdl)
-# LOQ = 0.012 ppb
+Cr6 info
+LOD = 0.004 ppb (marked as bdl)
+LOQ = 0.012 ppb
