@@ -1,9 +1,11 @@
 # set working directory
 # update with D's code to pull from box server directly, not local path
-setwd("C:/Users/allth/Box Sync/StatsProject")
+### Since we decided not to pull from the URL, do we want to just update the path with our
+### respective username every time we work in this document?
+setwd("C:/Users/delan/Box Sync/StatsProject")
 
 # import manually created csv file
-mpdata <- read.csv("DEQ_Stats_Data.csv", header = TRUE)
+mpdata <- na.omit(read.csv("DEQ_Stats_Data.csv", header = TRUE, stringsAsFactors = FALSE))
 
 # rename relevant headers to better format
 colnames(mpdata)[colnames(mpdata)=="Total.Well.depth..ft."] <- "well.depth.ft"
@@ -24,6 +26,29 @@ colnames(mpdata)
   
   # replace "bdl" in 'cr6.ppb' with "bdl.crit"
   # attach to dataframe as new column
+  
+mpdata$cr6.ppb[mpdata$cr6.ppb=="bdl"] <- bdl.crit
+
+par(mfrow=c(1,2))
+plot(mpdata$well.depth.ft,mpdata$cr6.ppb, xlab="Well depth (ft)", 
+     ylab= "Hex Cr (ppb)", col="darkblue")
+plot(mpdata$orp.mv, mpdata$cr6.ppb, xlab="Orp (mV)", 
+     ylab="LogHex Cr (ppb)", col="darkblue")
+
+par(mfrow=c(1,2))
+plot(mpdata$well.depth.ft, log(as.numeric(mpdata$cr6.ppb)), xlab="Well depth (ft)", 
+     ylab= "Log Hex Cr (ppb)", col="darkblue")
+plot(mpdata$orp.mv, log(as.numeric(mpdata$cr6.ppb)), xlab="Orp (mV)", 
+     ylab="Log Hex Cr (ppb)", col="darkblue")
+
+plot(mpdata$well.depth.ft, mpdata$orp.mv, xlab="Well depth (ft)", 
+     ylab = "Orp (mV)", col="darkblue")
+hist(as.numeric(mpdata$cr6.ppb), col="darkblue")
+hist(log(as.numeric(mpdata$cr6.ppb)),col="darkblue")
+
+##We still have sooo many values (I think they're the BDL values) that are skewing the
+##data even after log transformed. I'm not sure how to handle those values.
+
    
   
   
