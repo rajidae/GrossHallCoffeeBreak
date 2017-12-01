@@ -59,32 +59,71 @@ length(fdat$cr6.LOQ[fdat$cr6.LOQ == 0]) # 36 "failures"
 length(fdat$cr6.LOQ[fdat$cr6.LOQ == 1]) # 22 "successes"
 
 # now deal with Cr6.ppb raw data
-LOD <- 0.004
-set.seed(1001)
-bdl.crit <- runif(length(fdat$cr6.ppb[fdat$cr6.ppb=="bdl"]),0,LOD)
-fdat$cr6.ppb[fdat$cr6.ppb=="bdl"] <- bdl.crit
-
-# typeof(cr6.ppb) = "character" -> need to correct for this
-storage.mode(fdat$cr6.ppb) <- "double"
+# LOD <- 0.004
+# set.seed(1001)
+# bdl.crit <- runif(length(fdat$cr6.ppb[fdat$cr6.ppb=="bdl"]),0,LOD)
+# fdat$cr6.ppb[fdat$cr6.ppb=="bdl"] <- bdl.crit
 
 attach(fdat)
 
+#### EXPLORATION ####
+
+hist(as.numeric(cr6.ppb))
+hist(log(as.numeric(cr6.ppb)))
+
+# pH Relationship, excluding bdls
+  var <- pH
+  
+  # linear
+  plot(var, cr6.ppb)
+  plot(var, log(as.numeric(cr6.ppb)))
+    # log transformation gives linear relationship for cr6 and pH
+  
+  # binomial
+  plot(var, cr6.nc, col="purple")
+  plot(var, cr6.ca, col="red")
+  plot(var, cr6.LOQ, col="green")
+
+# ORP Relationship
+  var <- orp.mv
+  
+  # linear, excluding bdls
+  plot(var, cr6.ppb)
+  plot(var, log(as.numeric(cr6.ppb)))
+    # neither relationship seems well defined
+
+  # binomial
+  plot(var, cr6.nc, col="purple")
+  plot(var, cr6.ca, col="red")
+  plot(var, cr6.LOQ, col="green")
+  
+# well depth Relationship
+  var <- well.depth.ft
+  
+  # linear, excluding bdls
+  plot(var, cr6.ppb)
+  plot(var, log(as.numeric(cr6.ppb)))
+    # log may have better fit
+  
+  # binomial
+  plot(var, cr6.nc, col="purple")
+  plot(var, cr6.ca, col="red")
+  plot(var, cr6.LOQ, col="green")
+  
+# Aquifer Relationship
+  var <- factor(Aquifer)
+  
+  # linear, excluding bdls
+  plot(var, cr6.ppb)
+  plot(var, log(as.numeric(cr6.ppb)))
+    # probably no relationship
+  
+  # binomial
+  plot(var, cr6.nc, col="purple")
+  plot(var, cr6.ca, col="red")
+  plot(var, cr6.LOQ, col="green")
+    # these seem to be useless for factors
+  
 #### ANALYSIS ####
-
-var <- pH
-
-plot(var, cr6.ppb)
-plot(var, log(cr6.ppb))
-  # log transformation gives linear relationship for cr6 and pH
-
-qqnorm(as.numeric(cr6.ppb))
-qqnorm(log(as.numeric(cr6.ppb)))
-
-hist(cr6.ppb)
-
-
-plot(var, cr6.nc, col="purple")
-plot(var, cr6.ca, col="red")
-plot(var, cr6.LOQ, col="green")
 
 
